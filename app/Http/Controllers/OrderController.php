@@ -14,7 +14,7 @@ class OrderController extends Controller
         $rules = [
           "phone"=>"required|string|max:36|min:6",
           "products"=>"required|array",
-          "payment_type"=>"required|exists:payment_types,id",
+          "payment_type_id"=>"required|exists:payment_types,id",
         ];
         $validator = Validator::make($data,$rules);
         if($validator->fails()){
@@ -26,6 +26,6 @@ class OrderController extends Controller
             DB::table('order_products')->insert(['order_id'=>$order->id,'product_id'=>$product['id'],'count'=>$product['count']]);
         }
 
-        return response()->json(["status"=>true, 'data'=>$data]);
+        return response()->json(["status"=>true]);
     }
 }
