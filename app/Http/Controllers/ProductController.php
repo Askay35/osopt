@@ -103,8 +103,9 @@ class ProductController extends Controller
         $products_query = Product::query();
         $products_query->where("name", "like", "%$search%");
         $products = $products_query->limit(5)->get('name')->toArray();
-        return response()->json(['data' => $products? $products : []]);
+        return response()->json(['data' => $products ? $products : []]);
     }
+
     public function show($id)
     {
         $product = Product::find($id);
@@ -113,4 +114,6 @@ class ProductController extends Controller
         }
         return response()->json(['status' => false, 'message' => 'Такого продукта нет']);
     }
+
+
 }
