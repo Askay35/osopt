@@ -34,6 +34,8 @@ Route::prefix("subcategories")->group(function(){
 Route::prefix("products")->group(function(){
     Route::get('/', [ProductController::class, "index"]);
     Route::get('/{id}', [ProductController::class, "show"])->where('id', '[0-9]+');
+    Route::get('/search', [ProductController::class, "search"]);
+    Route::get('/search/autocomplete/{search}', [ProductController::class, "search_autocomplete"]);
 });
 
 Route::prefix("orders")->group(function(){

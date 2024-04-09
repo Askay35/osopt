@@ -27,7 +27,7 @@ class OrderController extends Controller
         }
 
         $message = "*Заявка на покупку*\n\n";
-        $message.= "Номер: `89888303675`\n\n";
+        $message.= "Номер: `$data[phone]`\n\n";
         $message.= "Тип оплаты: $data[payment_type]\n\n";
         if(isset($data['message'])){
             $message.= "Сообщение от клиента: *$data[message]*\n\n";
@@ -41,7 +41,7 @@ class OrderController extends Controller
             if($p){
                 $price = $p->price * $product['count'];
                 $order_sum += $price;
-                $message.= "*" . ($k + 1) . ")* Товар: *". $p->name . "* | *$product[count]* шт. | *$price* руб.\n\n";        
+                $message.= "*" . ($k + 1) . ") *". $p->name . "* | *$product[count]* шт. | *$price* руб.\n\n";        
                 $insert_data[] = ['order_id' => $order->id, 'product_id' => $product['id'], 'count' => $product['count']];
             }
         }
