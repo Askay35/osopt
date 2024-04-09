@@ -14,15 +14,12 @@ class Order extends Model
     protected $fillable = [
         "phone",
         "user_id",
-        "payment_type_id",
+        "payment_type",
         "status_id"
     ];
 
     public function user(){
         return $this->belongsTo(User::class);
-    }
-    public function payment_type(){
-        return $this->belongsTo("payment_types", "payment_type_id");
     }
     public function status(){
         return DB::table("order_statuses")->find($this->status_id)->first()->name;

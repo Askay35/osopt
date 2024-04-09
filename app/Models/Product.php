@@ -16,11 +16,7 @@ class Product extends Model
         "category_id",
         "subcategory_id",
         "name",
-        "desc",
         "price",
-        "weight",
-        "count",
-        "min_order_price",
         "in_stock"
     ];
 

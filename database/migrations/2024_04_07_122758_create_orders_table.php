@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string("phone", 36);
             $table->foreignId("user_id")->nullable();
-            $table->foreignId("payment_type_id");
+            $table->string("payment_type", 100);
             $table->foreignId("status_id")->default(1);
             $table->dateTime('created_at')->useCurrent();
         });

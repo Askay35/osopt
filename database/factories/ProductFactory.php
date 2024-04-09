@@ -23,11 +23,7 @@ class ProductFactory extends Factory
             'category_id'=>fake()->numberBetween(Category::first()->id,Category::count()),
             'subcategory_id'=>fake()->numberBetween(Subcategory::first()->id,Subcategory::count()),
             'name' => Str::random(32),
-            'desc' => fake()->realTextBetween(100,250),
             'price' => fake()->randomFloat(2,.25, 2.0) * 100.0,
-            'weight' => fake()->randomFloat(2,0.25, 2.0),
-            'count' => fake()->numberBetween(1,30),
-            'min_order_price' => fake()->randomFloat(2, 3, 15)*1000,
             'in_stock' => fake()->numberBetween(0,1)
         ];
     }
