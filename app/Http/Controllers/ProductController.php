@@ -23,9 +23,9 @@ class ProductController extends Controller
             return response()->json(["status" => false, "errors" => $validator->errors()]);
         }
 
-        $products_query = Product::where("is_stock",1);
+        $products_query = Product::where("in_stock",1);
         if ($filters['category_id'] != -1) {
-            $products_query = Product::where("category_id", $filters['category_id']);
+            $products_query->where("category_id", $filters['category_id']);
             if (isset($filters['subcategory_id'])) {
                 $products_query->where('subcategory_id', $filters['subcategory_id']);
             }
@@ -68,9 +68,9 @@ class ProductController extends Controller
             return response()->json(["status" => false, "errors" => $validator->errors()]);
         }
 
-        $products_query = Product::where("is_stock",1);
+        $products_query = Product::where("in_stock",1);
         if ($filters['category_id'] != -1) {
-            $products_query = Product::where("category_id", $filters['category_id']);
+            $products_query->where("category_id", $filters['category_id']);
             if (isset($filters['subcategory_id'])) {
                 $products_query->where('subcategory_id', $filters['subcategory_id']);
             }
@@ -100,7 +100,7 @@ class ProductController extends Controller
 
     public function search_autocomplete($search)
     {
-        $products_query = Product::where("is_stock",1);
+        $products_query = Product::where("in_stock",1);
         $products_query->where("name", "like", "%$search%");
         $products = $products_query->limit(5)->get('name')->toArray();
         return response()->json(['data' => $products ? $products : []]);
