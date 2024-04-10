@@ -16,7 +16,7 @@ return new class extends Migration
             $table->foreignId('category_id');
             $table->foreignId('subcategory_id');
             $table->string("name");
-            $table->string("image", 256)->nullable();
+            $table->string("image", 512)->nullable();
             $table->float("price");
             $table->boolean('in_stock')->default(true);
         });
