@@ -18,7 +18,7 @@ class OrderController extends Controller
         $rules = [
             "phone" => "required|string|max:36|min:6",
             "products" => "required|array",
-            "message"=>"string|max:300",
+            "message"=>"string|max:512",
             "payment_type" => "required|string|max:100",
         ];
         $validator = Validator::make($data, $rules);
@@ -41,7 +41,7 @@ class OrderController extends Controller
             if($p){
                 $price = $p->price * $product['count'];
                 $order_sum += $price;
-                $message.= "*" . ($k + 1) . ") *". $p->name . "* | *$product[count]* шт. | *$price* руб.\n\n";        
+                $message.= ($k + 1) . ") {$p->name} | $product[count] шт. | $price руб.\n\n";        
                 $insert_data[] = ['order_id' => $order->id, 'product_id' => $product['id'], 'count' => $product['count']];
             }
         }

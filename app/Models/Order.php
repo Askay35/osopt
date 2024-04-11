@@ -12,6 +12,7 @@ class Order extends BaseModel
         "phone",
         "user_id",
         "payment_type",
+        "message",
         "status_id"
     ];
 
