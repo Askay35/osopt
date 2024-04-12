@@ -3,7 +3,7 @@
 set -e
 echo "Deploying"
 git pull origin main
-composer install --no-dev --optimize-autoloader -y
+composer install --no-dev --optimize-autoloader -n
 php artisan down
 php artisan migrate --force
 php artisan config:cache
