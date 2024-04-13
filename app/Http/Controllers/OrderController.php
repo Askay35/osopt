@@ -16,7 +16,7 @@ class OrderController extends Controller
     {
         $data = $request->all();
         $rules = [
-            "phone" => "required|string|max:36|min:6",
+            "phone" => "required|string|max:36|min:4",
             "products" => "required|array",
             "message"=>"string|max:512",
             "payment_type" => "required|string|max:100",
@@ -30,7 +30,7 @@ class OrderController extends Controller
         $message.= "Номер: `$data[phone]`\n\n";
         $message.= "Тип оплаты: $data[payment_type]\n\n";
         if(isset($data['message'])){
-            $message.= "Сообщение от клиента: *$data[message]*\n\n";
+            $message.= "Сообщение от клиента: $data[message]\n\n";
         }
         $message.= "Продукты:\n\n";
         $order = Order::create($data);
