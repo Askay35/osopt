@@ -39,9 +39,12 @@ class OrderController extends Controller
         foreach ($data['products'] as $k=>$product) {
             $p = Product::find($product['id']);
             if($p){
-                $price = $p->price * $product['count'];
+                $price = $p->price * $product['product_count'];
+                if($product['package'] && $p->count){
+                    $price *= $p->count;
+                }
                 $order_sum += $price;
-                $message.= ($k + 1) . ") {$p->name} | $product[count] " . $product['package'] ? "упаковок" : "шт."  ." | $price руб.\n\n";        
+                $message.= ($k + 1) . ") {$p->name} | $product[product_count] " . (($product['package'] && $p->count) ? "упаковок" : "шт.")  . " | $price руб.\n\n";        
                 $insert_data[] = ['order_id' => $order->id, 'product_id' => $product['id'], 'count' => $product['count']];
             }
         }
