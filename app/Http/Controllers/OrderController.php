@@ -41,7 +41,7 @@ class OrderController extends Controller
             if($p){
                 $price = $p->price * $product['count'];
                 $order_sum += $price;
-                $message.= ($k + 1) . ") {$p->name} | $product[count] шт. | $price руб.\n\n";        
+                $message.= ($k + 1) . ") {$p->name} | $product[count] " . $product['package'] ? "упаковок" : "шт."  ." | $price руб.\n\n";        
                 $insert_data[] = ['order_id' => $order->id, 'product_id' => $product['id'], 'count' => $product['count']];
             }
         }
