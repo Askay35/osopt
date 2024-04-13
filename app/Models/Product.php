@@ -10,6 +10,7 @@ class Product extends BaseModel
         "category_id",
         "subcategory_id",
         "name",
+        "count",
         "image",
         "price",
         "in_stock"

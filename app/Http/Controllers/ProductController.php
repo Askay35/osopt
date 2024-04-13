@@ -69,6 +69,15 @@ class ProductController extends Controller
         }
 
         $products_query = Product::where("in_stock",1);
+        
+        if ($filters['category_id'] != -1) {
+            $products_query->where("category_id", $filters['category_id']);
+            if (isset($filters['subcategory_id'])) {
+                $products_query->where('subcategory_id', $filters['subcategory_id']);
+            }
+        }
+        $products_query->where("name", "like", "%" . $filters['search'] . "%");
+        
         switch ($filters['sorting']) {
             case 2:
                 $products_query->orderBy('price');
@@ -79,18 +88,9 @@ class ProductController extends Controller
             case 4:
                 $products_query->orderBy('name');
                 break;
-
             default:
                 break;
         }
-        if ($filters['category_id'] != -1) {
-            $products_query->where("category_id", $filters['category_id']);
-            if (isset($filters['subcategory_id'])) {
-                $products_query->where('subcategory_id', $filters['subcategory_id']);
-            }
-        }
-        $products_query->where("name", "like", "%" . $filters['search'] . "%");
-        
 
         if (!isset($filters['page'])) {
             $filters['page'] = 1;
