@@ -2,6 +2,8 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Collection;
+
 class Product extends BaseModel
 {
 
@@ -24,5 +26,17 @@ class Product extends BaseModel
     public function subcategory()
     {
         return $this->belongsTo(Subcategory::class);
+    }
+    public function brand()
+    {
+        return $this->belongsTo(Brand::class);
+    }
+
+    public static function getBrands(Collection $products){
+        $brands = [];
+        foreach ($products as $product){
+            $brands[] = $product->brand;
+        }
+        return $brands;
     }
 }

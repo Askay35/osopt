@@ -2,8 +2,7 @@
 
 namespace App\Models;
 
-
-class Category extends BaseModel
+class Brand extends BaseModel
 {
 
     public $timestamps = false;
@@ -11,14 +10,10 @@ class Category extends BaseModel
         "name",
     ];
 
-    public function subcategories()
-    {
-        return $this->hasMany(Subcategory::class);
-    }
-
     public function products()
     {
         return $this->hasMany(Product::class);
     }
-
 }
+
+

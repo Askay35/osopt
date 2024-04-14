@@ -23,7 +23,7 @@ class ProductController extends Controller
             return response()->json(["status" => false, "errors" => $validator->errors()]);
         }
 
-        $products_query = Product::where("in_stock",1);
+        $products_query = Product::where("in_stock", 1);
         if ($filters['category_id'] != -1) {
             $products_query->where("category_id", $filters['category_id']);
             if (isset($filters['subcategory_id'])) {
@@ -56,10 +56,11 @@ class ProductController extends Controller
     {
         $filters = $request->all();
         $rules = [
-            "search" => "required|string",
             "category_id" => "required|numeric",
-            "sorting" => "required|numeric|in:1,2,3,4",
             "subcategory_id" => "exists:subcategories,id",
+            "brand_id" => "exists:brands,id",
+            "search" => "required|string",
+            "sorting" => "required|numeric|in:1,2,3,4",
             "per_page" => "required|min:1|max:100|numeric",
             "page" => "numeric",
         ];
@@ -68,16 +69,20 @@ class ProductController extends Controller
             return response()->json(["status" => false, "errors" => $validator->errors()]);
         }
 
-        $products_query = Product::where("in_stock",1);
-        
+        $products_query = Product::where("in_stock", 1);
+
         if ($filters['category_id'] != -1) {
             $products_query->where("category_id", $filters['category_id']);
             if (isset($filters['subcategory_id'])) {
                 $products_query->where('subcategory_id', $filters['subcategory_id']);
+
+                if (isset($filters['brand_id'])) {
+                    $products_query->where('brand_id', $filters['brand_id']);
+                }
             }
         }
         $products_query->where("name", "like", "%" . $filters['search'] . "%");
-        
+
         switch ($filters['sorting']) {
             case 2:
                 $products_query->orderBy('price');
@@ -91,18 +96,17 @@ class ProductController extends Controller
             default:
                 break;
         }
-
         if (!isset($filters['page'])) {
             $filters['page'] = 1;
         }
         $offset = ($filters['page'] - 1) * $filters['per_page'];
-        $products = $products_query->offset($offset)->limit($filters['per_page'])->get();
+        $products = $products_query->offset($offset)->limit($filters['per_page'])->with('brand')->get();
         return response()->json(['status' => true, 'data' => $products]);
     }
 
     public function search_autocomplete($search)
     {
-        $products_query = Product::where("in_stock",1);
+        $products_query = Product::where("in_stock", 1);
         $products_query->where("name", "like", "%$search%");
         $products = $products_query->limit(5)->get('name')->toArray();
         return response()->json(['data' => $products ? $products : []]);
@@ -116,6 +120,4 @@ class ProductController extends Controller
         }
         return response()->json(['status' => false, 'message' => 'Такого продукта нет']);
     }
-
-
 }
