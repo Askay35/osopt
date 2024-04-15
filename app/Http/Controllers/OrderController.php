@@ -30,7 +30,7 @@ class OrderController extends Controller
         $message.= "Номер: `$data[phone]`\n\n";
         $message.= "Тип оплаты: $data[payment_type]\n\n";
         if(isset($data['message'])){
-            $message.= "Сообщение от клиента: $data[message]\n\n";
+            $message.= $this->escapeMessage("Сообщение от клиента: $data[message]\n\n");
         }
         $message.= "Продукты:\n\n";
         $order = Order::create($data);
@@ -44,26 +44,31 @@ class OrderController extends Controller
                     $price *= $p->count;
                 }
                 $order_sum += $price;
-                $message.= ($k + 1) . ") {$p->name} | $product[product_count] " . (($product['package'] && $p->count) ? "упаковок" : "шт.")  . " | $price руб.\n\n";        
+                $name = $this->escapeMessage($p->name);
+                $message.= ($k + 1) . "\\) $name \\| $product[product_count] " . (($product['package'] && $p->count) ? "упаковок" : "шт\\.")  . " \\| $price руб\\.\n\n";        
                 $insert_data[] = ['order_id' => $order->id, 'product_id' => $product['id'], 'count' => $product['count']];
             }
         }
 
-        $message.= "\nОбщая сумма: *$order_sum* руб.\n";        
+        $message.= "\nОбщая сумма: *$order_sum* руб\\.\n";        
         
         $current_datetime = new DateTime('now');
-        $message.= "Дата: " . $current_datetime->format('Y-m-d H:i:s');        
-        Telegram::sendMessage([
-            'parse_mode'=>"MarkdownV2",
-            'chat_id' => config('telegram.admin_id'),
-            'text' => $this->escapeMessage($message)
-        ]);
+        $message.= "Дата: " . $this->escapeMessage($current_datetime->format('Y-m-d H:i:s'));        
+        
+        $admins = config('telegram.admins');
+        foreach ($admins as $admin){
+            Telegram::sendMessage([
+                'parse_mode'=>"MarkdownV2",
+                'chat_id' => $admin,
+                'text' => $message
+            ]);
+        }
 
         DB::table('order_products')->insert($insert_data);
 
         return response()->json(["status" => true]);
     }
     private function escapeMessage($message){
-        return preg_replace('/([|{\[\]_~}+)(#>!=\-.])/','\\\\$1', $message);
+        return preg_replace('/([|{\[\]_~}+)(#>*`!=\-.])/','\\\\$1', $message);
     }
 }

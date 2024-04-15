@@ -15,6 +15,7 @@ class ProductController extends Controller
             "category_id" => "required|numeric",
             "sorting" => "required|numeric|in:1,2,3,4",
             "subcategory_id" => "exists:subcategories,id",
+            "brand_id" => "exists:brands,id",
             "per_page" => "required|min:1|max:100|numeric",
             "page" => "numeric",
         ];
@@ -29,6 +30,11 @@ class ProductController extends Controller
             if (isset($filters['subcategory_id'])) {
                 $products_query->where('subcategory_id', $filters['subcategory_id']);
             }
+            
+        }
+        
+        if (isset($filters['brand_id'])) {
+            $products_query->where('brand_id', $filters['brand_id']);
         }
         switch ($filters['sorting']) {
             case 2:
@@ -75,11 +81,11 @@ class ProductController extends Controller
             $products_query->where("category_id", $filters['category_id']);
             if (isset($filters['subcategory_id'])) {
                 $products_query->where('subcategory_id', $filters['subcategory_id']);
-
-                if (isset($filters['brand_id'])) {
-                    $products_query->where('brand_id', $filters['brand_id']);
-                }
             }
+        }
+        
+        if (isset($filters['brand_id'])) {
+            $products_query->where('brand_id', $filters['brand_id']);
         }
         $products_query->where("name", "like", "%" . $filters['search'] . "%");
 
@@ -100,7 +106,7 @@ class ProductController extends Controller
             $filters['page'] = 1;
         }
         $offset = ($filters['page'] - 1) * $filters['per_page'];
-        $products = $products_query->offset($offset)->limit($filters['per_page'])->with('brand')->get();
+        $products = $products_query->offset($offset)->limit($filters['per_page'])->get();
         return response()->json(['status' => true, 'data' => $products]);
     }
 

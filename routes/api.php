@@ -23,12 +23,13 @@ use App\Http\Controllers\ProductController;
 
 Route::prefix("categories")->group(function(){
     Route::get('/', [CategoryController::class, 'index']);
-    Route::get('/{id}', [CategoryController::class,"show"])->where('id', '[0-9]+');
 });
 
 Route::prefix("subcategories")->group(function(){
     Route::get('/', [SubcategoryController::class, "index"]);
-    Route::get('/{id}', [SubcategoryController::class, "show"])->where('id', '[0-9]+');
+});
+Route::prefix("brands")->group(function(){
+    Route::get('/', [BrandController::class, "index"]);
 });
 
 Route::prefix("products")->group(function(){

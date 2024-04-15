@@ -7,14 +7,15 @@ use Illuminate\Http\Request;
 
 class SubcategoryController extends Controller
 {
-    public function index(){
-        return response()->json(['status'=>true, 'data'=>Subcategory::all()]);
-    }
-    public function show($id){
-        $category = Subcategory::find($id);
-        if($category){
-            return response()->json(['status'=>true, 'data'=>$category]);
+    public function index(Request $request)
+    {
+        if ($request->has('category_id')) {
+            $subcategories = Subcategory::where('category_id',$request->get('category_id'))->get();
+            if ($subcategories) {
+                return response()->json(['status' => true, 'data' => $subcategories]);
+            }
+            return response()->json(['status' => false]);
         }
-        return response()->json(['status'=>false, 'message'=>'Такой подкатегории нет']);
+        return response()->json(['status' => true, 'data' => Subcategory::all()]);
     }
 }

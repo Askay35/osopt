@@ -32,11 +32,4 @@ class Product extends BaseModel
         return $this->belongsTo(Brand::class);
     }
 
-    public static function getBrands(Collection $products){
-        $brands = [];
-        foreach ($products as $product){
-            $brands[] = $product->brand;
-        }
-        return $brands;
-    }
 }
