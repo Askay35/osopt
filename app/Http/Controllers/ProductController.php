@@ -84,7 +84,7 @@ class ProductController extends Controller
             }
         }
         
-        if (isset($filters['brand_id'])) {
+        if (isset($filters['brand_id']) && $filters['brand_id']!=0) {
             $products_query->where('brand_id', $filters['brand_id']);
         }
         $products_query->where("name", "like", "%" . $filters['search'] . "%");
