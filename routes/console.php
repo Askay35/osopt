@@ -1,7 +1,8 @@
 <?php
 
-use Illuminate\Foundation\Inspiring;
 use Illuminate\Support\Facades\Artisan;
+use Illuminate\Support\Facades\Redis;
+
 // use Telegram\Bot\Laravel\Facades\Telegram;
 
 /*
@@ -17,5 +18,5 @@ use Illuminate\Support\Facades\Artisan;
 
 
 // Artisan::command('tg', function () {
-    // $this->comment(Inspiring::quote());
+    // Redis::del('test');
 // });//->purpose('Display an inspiring quote');
